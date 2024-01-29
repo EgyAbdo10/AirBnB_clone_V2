@@ -124,11 +124,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[argv[0]]()
+        # handle arguments in the create command
         if len(argv) > 1:
+            items = {}
+            for item in argv[1:]:
+                key = item.split(":")[0]
+                val = item.split(":")[1]
+                items[key] = val.split('"')[1]
+
             argv.insert(1, new_instance.id)
-            argv[2] = "{" + argv[2]
-            argv[2] += ", "
-            argv[-1] += "}"
+            argv = argv[0:2]
+            argv.append(str(items))
             args = " ".join(argv)
             HBNBCommand.do_update(self, args)
         storage.save()
