@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import json
 
 
 class HBNBCommand(cmd.Cmd):
@@ -125,12 +126,24 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[argv[0]]()
         # handle arguments in the create command
+        # create <Class name> <param 1> <param 2> <param 3>...
+        # <key name>=<value>
+        # <unit>.<decimal>
+        # <number>
         if len(argv) > 1:
             items = {}
             for item in argv[1:]:
                 key = item.split(":")[0]
-                val = item.split(":")[1]
-                items[key] = val.split('"')[1]
+                val = item.split(":")[1].replace("_", " ")
+                try:
+                    if "." in val:
+                        val = float(val)
+                        items[key] = val
+                    else:
+                        val = int(val)
+                        items[key] = val
+                except ValueError:
+                    items[key] = val.split('"')[1]
 
             argv.insert(1, new_instance.id)
             argv = argv[0:2]
