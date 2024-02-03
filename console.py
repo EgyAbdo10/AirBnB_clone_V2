@@ -144,7 +144,6 @@ class HBNBCommand(cmd.Cmd):
                         items[key] = val
                 except ValueError:
                     items[key] = val.split('"')[1]
-                if getenv("HBNB_TYPE_STORAGE") == "db":
                     new_instance.__setattr__(key, items[key]) 
 
             argv.insert(1, new_instance.id)
@@ -153,7 +152,9 @@ class HBNBCommand(cmd.Cmd):
             args = " ".join(argv)
             if getenv("HBNB_TYPE_STORAGE") == "db":
                 storage.new(new_instance)
-        storage.save()
+            else:
+                storage.new(new_instance)
+                storage.save()
         print(new_instance.id)
         # storage.save()
     def help_create(self):
