@@ -3,7 +3,6 @@
 import cmd
 import sys
 from models.__init__ import storage
-import json
 from os import getenv
 
 class HBNBCommand(cmd.Cmd):
@@ -116,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.replace("=", ":")
+        # args = args.replace("=", ":")
         argv = args.split(" ")
         if not argv or not argv[0]:
             print("** class name missing **")
@@ -133,8 +132,8 @@ class HBNBCommand(cmd.Cmd):
         if len(argv) > 1:
             items = {}
             for item in argv[1:]:
-                key = item.split(":")[0]
-                val = item.split(":")[1].replace("_", " ")
+                key = item.split("=")[0]
+                val = item.split("=")[1].replace("_", " ")
                 try:
                     if "." in val:
                         val = float(val)
@@ -144,17 +143,14 @@ class HBNBCommand(cmd.Cmd):
                         items[key] = val
                 except ValueError:
                     items[key] = val.split('"')[1]
-                    new_instance.__setattr__(key, items[key]) 
+                new_instance.__setattr__(key, items[key]) 
 
-            argv.insert(1, new_instance.id)
-            argv = argv[0:2]
-            argv.append(str(items))
-            args = " ".join(argv)
             if getenv("HBNB_TYPE_STORAGE") == "db":
                 storage.new(new_instance)
+                
             else:
                 storage.new(new_instance)
-                storage.save()
+            storage.save()
         print(new_instance.id)
         # storage.save()
     def help_create(self):
@@ -241,6 +237,7 @@ class HBNBCommand(cmd.Cmd):
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
+            
             for k, v in storage.all().items():
                 print_list.append(str(v))
 

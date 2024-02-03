@@ -37,9 +37,12 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
         classes = {
-            'State': State, 'City': City
+            'User': User, #'Place': Place,
+            'State': State, 'City': City#, 'Amenity': Amenity,
+            #'Review': Review
             }
         obj_dict = {}
+        # print(cls.__class__.__name__)
         if (cls is not None) and (cls in classes.keys() or cls in classes.values()):
             objs = self.__session.query(classes[cls]).all()
             for obj in objs:
