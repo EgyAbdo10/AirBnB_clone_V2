@@ -41,6 +41,7 @@ class DBStorage:
             'State': State, 'City': City#, 'Amenity': Amenity,
             #'Review': Review
             }
+        self.reload()
         obj_dict = {}
         # print(cls.__class__.__name__)
         if (cls is not None) and (cls in classes.keys() or cls in classes.values()):
