@@ -2,16 +2,9 @@
 """ Console Module """
 import cmd
 import sys
-from models.base_model import BaseModel
 from models.__init__ import storage
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
 import json
-
+from os import getenv
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -19,11 +12,18 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
+    from models.state import State
+    from models.city import City
+    from models.base_model import BaseModel
+    from models.user import User
+    from models.place import Place
+    from models.amenity import Amenity
+    from models.review import Review
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
@@ -144,16 +144,18 @@ class HBNBCommand(cmd.Cmd):
                         items[key] = val
                 except ValueError:
                     items[key] = val.split('"')[1]
+                if getenv("HBNB_TYPE_STORAGE") == "db":
+                    new_instance.__setattr__(key, items[key]) 
 
             argv.insert(1, new_instance.id)
             argv = argv[0:2]
             argv.append(str(items))
             args = " ".join(argv)
-            HBNBCommand.do_update(self, args)
+            if getenv("HBNB_TYPE_STORAGE") == "db":
+                storage.new(new_instance)
         storage.save()
         print(new_instance.id)
         # storage.save()
-
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -234,11 +236,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -287,7 +289,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         # determine if key is present
-        if key not in storage.all():
+        if key not in storage.all() and key not in storage.all().keys():
             print("** no instance found **")
             return
 
