@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from os import getenv
 from sqlalchemy import String, Column
+from sqlalchemy.orm import relationship
 
 
 if getenv("HBNB_TYPE_STORAGE") == "db":
@@ -13,6 +14,8 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
         password = Column("password", String(128), nullable=False)
         first_name = Column("first_name", String(128), nullable=True)
         last_name = Column("last_name", String(128), nullable=True)
+        places = relationship("Place", back_populates="user", cascade="all,delete")
+        # hbnb_dev_pwd
 
 else:
     class User(BaseModel):

@@ -14,6 +14,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
                         ForeignKey("states.id"), nullable=False)
         name = Column("name", String(128), nullable=False)
         state = relationship("State", back_populates="cities")
+        places = relationship("Place", back_populates="cities", cascade="all,delete")
 else:
     class City(BaseModel):
         name = ""
