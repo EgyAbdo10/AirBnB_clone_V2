@@ -15,6 +15,11 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
         name = Column("name", String(128), nullable=False)
         state = relationship("State", back_populates="cities")
         places = relationship("Place", back_populates="cities", cascade="all,delete")
+
+        def __init__(self, *args, **kwargs):
+            super().__init__()
+            for k, v in kwargs.items():
+                setattr(self, k, v)
 else:
     class City(BaseModel):
         name = ""

@@ -20,6 +20,11 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
         user = relationship("User", back_populates="reviews")
         place = relationship("Place", back_populates="reviews")
 
+        def __init__(self, *args, **kwargs):
+            super().__init__()
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+
 else:
     class Review(BaseModel):
         """ Review class to store review information """

@@ -38,7 +38,7 @@ class DBStorage:
         from models.review import Review
         classes = {
             'User': User, 'Place': Place,
-            'State': State, 'City': City,# 'Amenity': Amenity,
+            'State': State, 'City': City,'Amenity': Amenity,
             'Review': Review
             }
         self.reload()

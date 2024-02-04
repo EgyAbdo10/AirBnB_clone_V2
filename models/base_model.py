@@ -19,6 +19,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
+        
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
@@ -29,6 +30,7 @@ class BaseModel:
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
+
             del kwargs['__class__']
             self.created_at = kwargs['created_at']
             self.updated_at = kwargs['updated_at']

@@ -17,7 +17,10 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
         places = relationship("Place", back_populates="user", cascade="all,delete")
         reviews = relationship("Review", back_populates="user", cascade="all,delete")
         # hbnb_dev_pwd
-
+        def __init__(self, *args, **kwargs):
+            super().__init__()
+            for k, v in kwargs.items():
+                setattr(self, k, v)
 else:
     class User(BaseModel):
         """This class defines a user by various attributes"""

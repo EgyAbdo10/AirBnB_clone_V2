@@ -2,7 +2,7 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from os import getenv
-from sqlalchemy import String, Integer, Float, Column, ForeignKey
+from sqlalchemy import String, Integer, Float, Column, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 
@@ -23,7 +23,23 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
         user = relationship("User", back_populates="places")
         cities = relationship("City", back_populates="places")
         reviews = relationship("Review", back_populates="place", cascade="all,delete")
-        amenity_ids = []
+        amenities = relationship("Amenity", secondary="place_amenity",
+                                  back_populates="place_amenities", viewonly=False)
+        # amenity_ids = []
+        def __init__(self, *args, **kwargs):
+            super().__init__()
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+
+
+    place_amenity = Table("place_amenity", Base.metadata, 
+                          Column("place_id", String(60), 
+                                 ForeignKey("places.id"),
+                                 primary_key=True, nullable=False),
+                          Column("amenity_id", String(60),
+                                  ForeignKey("amenities.id"),
+                                  primary_key=True, nullable=False)
+                          )
 
 else:
     class Place(BaseModel):
@@ -49,3 +65,23 @@ else:
                 if obj.place_id == self.id:
                     obj_list.append(obj)
             return obj_list
+        
+        @property
+        def amenities(self):
+            from models.__init__ import storage
+            from models.amenity import Amenity
+            objs = storage.all(Amenity)
+            obj_list = []
+            for amen_id in self.amenity_ids:
+                for obj in objs.values():
+                    if amen_id == obj.id:
+                        obj_list.append(obj)
+            return obj_list
+        @amenities.setter
+        def amenities(self, new_id):
+            from models.__init__ import storage
+            from models.amenity import Amenity
+            objs = storage.all(Amenity).values()
+            ids = [obj.id for obj in objs]
+            if new_id in ids:
+                self.amenity_ids.append(new_id)
