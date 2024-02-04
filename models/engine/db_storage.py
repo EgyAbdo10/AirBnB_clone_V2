@@ -38,8 +38,8 @@ class DBStorage:
         from models.review import Review
         classes = {
             'User': User, 'Place': Place,
-            'State': State, 'City': City#, 'Amenity': Amenity,
-            #'Review': Review
+            'State': State, 'City': City,# 'Amenity': Amenity,
+            'Review': Review
             }
         self.reload()
         obj_dict = {}
@@ -82,3 +82,4 @@ class DBStorage:
                                       expire_on_commit=False)
         Session = scoped_session(sessionFactory)
         self.__session = Session
+

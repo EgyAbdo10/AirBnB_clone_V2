@@ -11,13 +11,14 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
+    from models.user import User
     from models.state import State
     from models.city import City
-    from models.base_model import BaseModel
-    from models.user import User
     from models.place import Place
-    from models.amenity import Amenity
     from models.review import Review
+    from models.base_model import BaseModel
+    
+    from models.amenity import Amenity
     classes = {
             'BaseModel': BaseModel, 'User': User, 'Place': Place,
             'State': State, 'City': City, 'Amenity': Amenity,
@@ -145,12 +146,11 @@ class HBNBCommand(cmd.Cmd):
                     items[key] = val.split('"')[1]
                 new_instance.__setattr__(key, items[key]) 
 
-            if getenv("HBNB_TYPE_STORAGE") == "db":
-                storage.new(new_instance)
-                
-            else:
-                storage.new(new_instance)
-            storage.save()
+        if getenv("HBNB_TYPE_STORAGE") == "db":
+            storage.new(new_instance)
+        else:
+            storage.new(new_instance)
+        storage.save()
         print(new_instance.id)
         # storage.save()
     def help_create(self):
@@ -182,7 +182,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
@@ -233,6 +233,7 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
+            # print()
             for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
