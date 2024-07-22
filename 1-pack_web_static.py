@@ -20,7 +20,7 @@ def do_pack():
     file_name = f"web_static_{year}{month}{day}{hour}{min}{sec}.tgz"
     local("mkdir -p versions")
     local(f"tar -czf ./versions/{file_name} -C ./web_static .")
-    if os.path.exists(f"/home/egyabdo/AirBnB_clone_v2/versions/{file_name}"):
-        return f"/home/egyabdo/AirBnB_clone_v2/versions/{file_name}"
+    if os.path.exists(f"~/AirBnB_clone_v2/versions/{file_name}"):
+        return f"~/AirBnB_clone_v2/versions/{file_name}"
     else:
         return None
