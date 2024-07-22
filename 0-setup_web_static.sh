@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # install nginx and make dirs
 if ! dpkg -l | grep nginx; then
     sudo apt-get -y update
