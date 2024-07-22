@@ -17,7 +17,7 @@ def do_pack():
         hour, min, sec = time_now[0], time_now[1], int(float(time_now[2]))
         file_name = f"web_static_{year}{month}{day}{hour}{min}{sec}.tgz"
         local("mkdir -p versions")
-        local(f"tar -czf ./versions/{file_name} -C ./web_static .")
+        local(f"tar -cvzf ./versions/{file_name} -C ./web_static .")
         return f"versions/{file_name}"
     except Exception:
         return False

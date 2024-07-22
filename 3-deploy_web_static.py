@@ -20,7 +20,7 @@ def do_pack():
         hour, min, sec = time_now[0], time_now[1], int(float(time_now[2]))
         file_name = f"web_static_{year}{month}{day}{hour}{min}{sec}.tgz"
         local("mkdir -p versions")
-        local(f"tar -czf ./versions/{file_name} -C ./web_static .")
+        local(f"tar -cvzf ./versions/{file_name} -C ./web_static .")
         cwd = os.getcwd()
         return f"{cwd}/versions/{file_name}"
     except Exception:
@@ -34,7 +34,7 @@ def do_deploy(archive_path):
     put(local_path=archive_path, remote_path="/tmp/")
     archive_name = archive_path.split("/")[-1][:-4]  # without extension
     run(f"mkdir -p /data/web_static/releases/{archive_name}")
-    run(f"tar -xzf /tmp/{archive_name}.tgz" +
+    run(f"tar -xvzf /tmp/{archive_name}.tgz" +
         f" -C /data/web_static/releases/{archive_name}")
     run(f"rm -f /tmp/{archive_name}.tgz")
     run(f"rm -rf /data/web_static/current")
