@@ -11,14 +11,18 @@ def do_deploy(archive_path):
     """deploy code to remote servers"""
     if not os.path.exists(archive_path):
         return False
-    put(local_path=archive_path, remote_path="/tmp/")
-    archive_name = archive_path.split("/")[-1][:-4]  # without extension
-    run(f"mkdir -p /data/web_static/releases/{archive_name}")
-    run(f"tar -xzf /tmp/{archive_name}.tgz" +
-        f" -C /data/web_static/releases/{archive_name}")
-    run(f"rm -f /tmp/{archive_name}.tgz")
-    run(f"rm -rf /data/web_static/current")
-    run(f"ln -s /data/web_static/releases/{archive_name}" +
-         " /data/web_static/current")
-    return True    
+    try:
+        put(local_path=archive_path, remote_path="/tmp/")
+        archive_name = archive_path.split("/")[-1][:-4]  # without extension
+        run(f"mkdir -p /data/web_static/releases/{archive_name}")
+        run(f"tar -xzf /tmp/{archive_name}.tgz" +
+            f" -C /data/web_static/releases/{archive_name}")
+        run(f"rm -f /tmp/{archive_name}.tgz")
+        run(f"rm -rf /data/web_static/current")
+        run(f"ln -s /data/web_static/releases/{archive_name}" +
+            " /data/web_static/current")
+        return True
+    except Exception:
+        return False
+    
     
