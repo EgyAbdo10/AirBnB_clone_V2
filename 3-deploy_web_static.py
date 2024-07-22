@@ -5,7 +5,6 @@ from datetime import datetime
 import os
 
 
-
 env.hosts = ["ubuntu@100.25.144.102", "ubuntu@34.207.58.33"]
 
 
@@ -26,6 +25,7 @@ def do_pack():
     else:
         return None
 
+
 def do_deploy(archive_path):
     """deploy code to remote servers"""
     if not os.path.exists(archive_path):
@@ -41,5 +41,11 @@ def do_deploy(archive_path):
          " /data/web_static/current")
     return True
 
+
 def deploy():
+    """deploy all modification to servers"""
     archive_path = do_pack()
+    if archive_path is None:
+        return False
+    do_deploy(archive_path)
+    return True
