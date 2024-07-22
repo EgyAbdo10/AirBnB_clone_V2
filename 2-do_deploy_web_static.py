@@ -14,14 +14,10 @@ def do_deploy(archive_path):
     put(local_path=archive_path, remote_path="/tmp/")
     archive_name = archive_path.split("/")[-1][:-4]  # without extension
     run(f"mkdir -p /data/web_static/releases/{archive_name}")
-    run(f"""tar -xzf /tmp/{archive_name}.tgz -C
-         /data/web_static/releases/{archive_name}""")
-    run(f"rm /tmp/{archive_name}.tgz")
+    run(f"tar -xzf /tmp/{archive_name}.tgz" +
+        f" -C /data/web_static/releases/{archive_name}")
+    run(f"rm -f /tmp/{archive_name}.tgz")
     run(f"rm -rf /data/web_static/current")
-    sudo(
-        f"""
-        ln -s /data/web_static/releases/{archive_name}/
-         /data/web_static/current
-        """
-        )
+    sudo(f"ln -s /data/web_static/releases/{archive_name}" +
+         " /data/web_static/current")
     return True
