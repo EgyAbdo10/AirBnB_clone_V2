@@ -20,4 +20,5 @@ def do_deploy(archive_path):
     run(f"rm -rf /data/web_static/current")
     run(f"ln -s /data/web_static/releases/{archive_name}" +
          " /data/web_static/current")
-    return True
+    return True    
+    
