@@ -5,9 +5,6 @@ from datetime import datetime
 import os
 
 
-env.hosts = ["ubuntu@100.25.144.102", "ubuntu@34.207.58.33"]
-
-
 def do_pack():
     """pack files into a tgz then get from remote servers"""
     # /data/web_static/
@@ -20,7 +17,8 @@ def do_pack():
     file_name = f"web_static_{year}{month}{day}{hour}{min}{sec}.tgz"
     local("mkdir -p versions")
     local(f"tar -czf ./versions/{file_name} -C ./web_static .")
-    if os.path.exists(f"~/AirBnB_clone_v2/versions/{file_name}"):
-        return f"~/AirBnB_clone_v2/versions/{file_name}"
+    home_dir = os.path.expanduser("~")
+    if os.path.exists(f"{home_dir}/AirBnB_clone_v2/versions/{file_name}"):
+        return f"{home_dir}/AirBnB_clone_v2/versions/{file_name}"
     else:
         return None
