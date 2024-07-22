@@ -2,6 +2,7 @@
 """this file is a fabfile togenerate tgz archives"""
 from fabric.api import *
 from datetime import datetime
+import os
 
 
 env.hosts = ["ubuntu@100.25.144.102", "ubuntu@34.207.58.33"]
@@ -19,3 +20,7 @@ def do_pack():
     file_name = f"web_static_{year}{month}{day}{hour}{min}{sec}.tgz"
     local("mkdir -p versions")
     local(f"tar -czf ./versions/{file_name} ./web_static/")
+    if os.path.exists(f"/home/egyabdo/AirBnB_clone_v2/versions/{file_name}"):
+        return f"/home/egyabdo/AirBnB_clone_v2/versions/{file_name}"
+    else:
+        return None
