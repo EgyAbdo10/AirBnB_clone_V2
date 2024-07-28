@@ -23,6 +23,7 @@ def open_web_2():
 @app.route("/c/<text>", strict_slashes=False)
 def get_c_text(text):
     """open web app on page c and print 'C <text>' """
+    text = text.replace("_", " ")
     return f"C {text}"
 
 
