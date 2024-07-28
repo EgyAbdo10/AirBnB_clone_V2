@@ -44,10 +44,17 @@ class DBStorage:
         self.reload()
         obj_dict = {}
         # print(cls.__class__.__name__)
-        if (cls is not None) and (cls in classes.keys() or cls in classes.values()):
+        if (cls is not None) and (cls in classes.keys()):
             objs = self.__session.query(classes[cls]).all()
             for obj in objs:
                 key = cls + "." + obj.id
+                obj_dict[key] = obj
+        
+        elif (cls is not None) and (cls in classes.values()):
+            objs = self.__session.query(cls).all()
+            for obj in objs:
+                key = cls.__name__ + "." + obj.id
+                # print(obj_dict)
                 obj_dict[key] = obj
         else:
             for table in classes.values():
@@ -83,3 +90,6 @@ class DBStorage:
         Session = scoped_session(sessionFactory)
         self.__session = Session
 
+
+    def close(self):
+        self.__session.close()

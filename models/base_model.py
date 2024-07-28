@@ -16,11 +16,11 @@ class BaseModel:
         id = Column("id", String(60), primary_key=True, nullable=False)
         created_at = Column("created_at", DateTime, nullable=False)
         updated_at = Column("updated_at", DateTime, nullable=False)
-
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        
-        if not kwargs:
+        if ("id" not in kwargs.keys()
+        and "created_at" not in kwargs.keys()
+        and "updated_at" not in kwargs.keys()):
             from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
