@@ -5,6 +5,7 @@ import sys
 from models.__init__ import storage
 from os import getenv
 
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
@@ -17,7 +18,6 @@ class HBNBCommand(cmd.Cmd):
     from models.place import Place
     from models.review import Review
     from models.base_model import BaseModel
-    
     from models.amenity import Amenity
     classes = {
             'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -144,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
                         items[key] = val
                 except ValueError:
                     items[key] = val.split('"')[1]
-                new_instance.__setattr__(key, items[key]) 
+                new_instance.__setattr__(key, items[key])
 
         if getenv("HBNB_TYPE_STORAGE") == "db":
             storage.new(new_instance)
@@ -153,6 +153,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
         print(new_instance.id)
         # storage.save()
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -238,7 +239,6 @@ class HBNBCommand(cmd.Cmd):
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            
             for k, v in storage.all().items():
                 print_list.append(str(v))
 

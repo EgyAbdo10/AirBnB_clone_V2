@@ -10,13 +10,15 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
     class State(BaseModel, Base):
         """ State class """
         __tablename__ = "states"
-        cities = relationship("City", back_populates="state", cascade="all,delete")
+        cities = relationship("City", back_populates="state",
+                              cascade="all,delete")
+
         def __init__(self, *args, **kwargs):
             super().__init__()
             for k, v in kwargs.items():
                 setattr(self, k, v)
         name = Column("name", String(128), nullable=False)
-            
+
 else:
     class State(BaseModel):
         name = ''

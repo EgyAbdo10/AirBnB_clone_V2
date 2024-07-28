@@ -7,11 +7,9 @@ from models.base_model import Base
 # from models.__init__ import storage
 
 
-
 class DBStorage:
     __engine = None
     __session = None
-
 
     def __init__(self):
         host = getenv("HBNB_MYSQL_HOST")
@@ -38,7 +36,7 @@ class DBStorage:
         from models.review import Review
         classes = {
             'User': User, 'Place': Place,
-            'State': State, 'City': City,'Amenity': Amenity,
+            'State': State, 'City': City, 'Amenity': Amenity,
             'Review': Review
             }
         self.reload()
@@ -49,7 +47,7 @@ class DBStorage:
             for obj in objs:
                 key = cls + "." + obj.id
                 obj_dict[key] = obj
-        
+
         elif (cls is not None) and (cls in classes.values()):
             objs = self.__session.query(cls).all()
             for obj in objs:
@@ -89,7 +87,6 @@ class DBStorage:
                                       expire_on_commit=False)
         Session = scoped_session(sessionFactory)
         self.__session = Session
-
 
     def close(self):
         self.__session.close()
