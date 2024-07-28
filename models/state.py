@@ -14,6 +14,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
                               cascade="all,delete")
 
         def __init__(self, *args, **kwargs):
+            """initialize a state"""
             super().__init__()
             for k, v in kwargs.items():
                 setattr(self, k, v)
@@ -21,9 +22,11 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
 
 else:
     class State(BaseModel):
+        """this class is for creating state objects"""
         name = ''
         @property
         def cities(self):
+            """get all cities in a state"""
             from models.__init__ import storage
             from models.city import City
             city_objs = storage.all(City)

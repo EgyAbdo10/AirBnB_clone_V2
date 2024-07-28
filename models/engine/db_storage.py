@@ -12,6 +12,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
+        """initialize a storage"""
         host = getenv("HBNB_MYSQL_HOST")
         user = getenv("HBNB_MYSQL_USER")
         # hbnb_dev_pwd
@@ -26,6 +27,7 @@ class DBStorage:
             metadata.drop_all()
 
     def all(self, cls=None):
+        """get all data from storage"""
         # Session = sessionmaker(bind=self.__engine)
         # self.__session = Session()
         from models.user import User
@@ -76,6 +78,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
+        """reload data"""
         from models.user import User
         from models.place import Place
         from models.state import State
@@ -89,4 +92,5 @@ class DBStorage:
         self.__session = Session
 
     def close(self):
+        """close session"""
         self.__session.close()

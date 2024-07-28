@@ -70,4 +70,5 @@ class FileStorage:
                 FileStorage().save()
 
     def close(self):
+        """reload data agian"""
         self.reload()
