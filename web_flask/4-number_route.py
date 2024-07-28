@@ -26,6 +26,7 @@ def get_c_text(text):
     text = text.replace("_", " ")
     return f"C {text}"
 
+
 @app.route("/python", strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
 def get_python_text(text="is_cool"):
@@ -34,7 +35,7 @@ def get_python_text(text="is_cool"):
     return f"Python {text}"
 
 
-@app.route("/number", strict_slashes=False)
+
 @app.route("/number/<int:num>", strict_slashes=False)
 def get_num(num):
     """open web app on page and prints num is a number """
