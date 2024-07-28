@@ -10,13 +10,13 @@ app = Flask(__name__)
 
 @app.route("/", strict_slashes=False)
 def open_web():
-    """open web and return """
+    """open web and return Hello HBNB!"""
     return "Hello HBNB!"
 
 
 @app.route("/hbnb", strict_slashes=False)
-def open_web():
-    """open web and return """
+def open_web_2():
+    """open web app on page hbnb and return HBNB"""
     return "HBNB"
 
 
