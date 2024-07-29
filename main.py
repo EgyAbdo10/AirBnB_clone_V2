@@ -35,3 +35,16 @@ all_states = storage.all(State)
 for state_id, state in all_states.items():
     for city in state.cities:
         print("Find the city {} in the state {}".format(city, state))
+
+
+
+# echo 'INSERT INTO `cities` VALUES ("121a5gf1-7d82-45d9-b54c-a76916479545","yofi","421a55hh-7d82-45d9-b54c-a76916479545","2017-03-25 19:42:40","2017-03-25 19:42:40");' | sudo mysql -uroot hbnb_dev_db
+"""
+        {% for city in cities %}
+        <UL>
+        {% if city.state_id == state.id %}
+        <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+        {% endif %}
+        {% endfor %}
+        </UL>
+"""

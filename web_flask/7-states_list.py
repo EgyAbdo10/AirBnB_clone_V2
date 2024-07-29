@@ -12,16 +12,21 @@ app = Flask(__name__)
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
-    print("worked")
     storage.close()
 
 
 @app.route("/states_list", strict_slashes=False)
 def get_states():
-    objs_dict = storage.all("State")
-    sorted_dict = dict(sorted(objs_dict.items(),
+    states_dict = storage.all("State")
+    sorted_states_dict = dict(sorted(states_dict.items(),
                               key=lambda item: (item[1].name, item[0])))
-    return render_template("7-states_list.html", obj_vals=sorted_dict.values())
+    
+    cities_dict = storage.all("City")
+    sorted_cities_dict = dict(sorted(cities_dict.items(),
+                              key=lambda item: (item[1].name, item[0])))
+    return render_template("7-states_list.html",
+                           states=sorted_states_dict.values(),
+                           cities=sorted_cities_dict.values())
 
 
 if __name__ == "__main__":
