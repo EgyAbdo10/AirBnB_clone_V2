@@ -9,15 +9,31 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
         """Returns a dictionary of models currently in storage"""
         obj_dict = {}
-        classes = ['BaseModel', 'User', 'Place',
+        classes_names = ['BaseModel', 'User', 'Place',
                    'State', 'City', 'Amenity', 'Review']
-        if cls and (cls in classes or cls.__name__ in classes):
+        classes = [BaseModel, User, Place,
+                   State, City, Amenity, Review]
+        
+        if cls in classes_names:
+            for key in FileStorage.__objects.keys():
+                if key[:key.index(".")] == cls:
+                    obj_dict[key] = FileStorage.__objects[key]
+            return obj_dict
+        elif cls and (cls in classes):
             for key in FileStorage.__objects.keys():
                 if key[:key.index(".")] == cls.__name__:
                     obj_dict[key] = FileStorage.__objects[key]
             return obj_dict
+
         else:
             return FileStorage.__objects
 
