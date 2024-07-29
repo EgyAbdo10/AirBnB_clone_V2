@@ -14,11 +14,11 @@ from models.review import Review
 
 if getenv("HBNB_TYPE_STORAGE") == "db":
     from models.engine.db_storage import DBStorage
-    print("db_storage is on")
+    # print("db_storage is on")
     storage = DBStorage()
 else:
     from models.engine.file_storage import FileStorage
-    print("json_storage is on")
+    # print("json_storage is on")
     storage = FileStorage()
 
 storage.reload()

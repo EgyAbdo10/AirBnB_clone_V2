@@ -35,3 +35,7 @@ all_states = storage.all(State)
 for state_id, state in all_states.items():
     for city in state.cities:
         print("Find the city {} in the state {}".format(city, state))
+
+
+
+echo 'INSERT INTO `states` VALUES ("Alabama","121a55f1-7d82-45d9-b54c-a76916479545","2017-03-25 19:42:40","2017-03-25 19:42:40");' | mysql -uroot -p hbnb_dev_db
