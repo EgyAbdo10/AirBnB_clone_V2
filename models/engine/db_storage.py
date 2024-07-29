@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """create a new db storage engine"""
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine, MetaData, text
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
 from models.base_model import Base
@@ -18,6 +18,16 @@ class DBStorage:
         # hbnb_dev_pwd
         passwd = getenv("HBNB_MYSQL_PWD")
         db = getenv("HBNB_MYSQL_DB")
+        self.__engine = create_engine(
+        f"mysql+mysqldb://{user}:{passwd}@{host}/",
+        pool_pre_ping=True)
+        connection = self.__engine.connect()
+
+        # Create database if it doesn't exist
+        connection.execute(text(f"CREATE DATABASE IF NOT EXISTS `{db}`"))
+
+        # Close the connection
+        connection.close()
         self.__engine = create_engine(
             f"mysql+mysqldb://{user}:{passwd}@{host}/{db}",
             pool_pre_ping=True)
