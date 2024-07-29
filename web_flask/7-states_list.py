@@ -19,10 +19,9 @@ def shutdown_session(exception=None):
 @app.route("/states_list", strict_slashes=False)
 def get_states():
     objs_dict = storage.all("State")
-    print((storage))
     sorted_dict = dict(sorted(objs_dict.items(),
                               key=lambda item: (item[1].name, item[0])))
-    return render_template("7-states_list.html", obj_vals=objs_dict.values())
+    return render_template("7-states_list.html", obj_vals=sorted_dict.values())
 
 
 if __name__ == "__main__":
