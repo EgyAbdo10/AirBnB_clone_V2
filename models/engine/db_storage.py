@@ -55,11 +55,15 @@ class DBStorage:
         obj_dict = {}
         # print(cls.__class__.__name__)
         if (cls is not None) and (cls in classes.keys()):
-            objs = self.__session.query(classes[cls]).all()
+            # print(1)
+            # objs = self.__session.query(text('states')).all()
+            table_name = classes[cls].__tablename__
+            results = self.__session.execute(text(f"SELECT * FROM {table_name}"))
+            objs = results.fetchall()
             for obj in objs:
                 key = cls + "." + obj.id
                 obj_dict[key] = obj
-
+        
         elif (cls is not None) and (cls in classes.values()):
             objs = self.__session.query(cls).all()
             for obj in objs:
@@ -95,7 +99,8 @@ class DBStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
-        Base.metadata.create_all(bind=self.__engine)
+        
+        Base.metadata.create_all(bind=self.__engine, checkfirst=True)
         sessionFactory = sessionmaker(bind=self.__engine,
                                       expire_on_commit=False)
         Session = scoped_session(sessionFactory)
